@@ -1,6 +1,6 @@
 #better_file
 
-[![Build Status](https://travis-ci.org/bobtfish/puppet-better_file.png)
+[![Build Status](https://travis-ci.org/bobtfish/puppet-better_file.png)](https://travis-ci.org/bobtfish/puppet-better_file)
 
 ####Table of Contents
 
