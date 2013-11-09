@@ -20,7 +20,7 @@ module Puppet::Parser::Functions
       if module_path = Puppet::Module.find(mod, compiler.environment.to_s)
         module_path = module_path.path
       else
-        raise(Puppet::ParseError, "Could not find module #{args[0]} in environment #{compiler.environment}")
+        raise(Puppet::ParseError, "Could not find module #{mod} in environment #{compiler.environment}")
       end
       fn = "#{module_path}/files/#{file}"
     end
