@@ -24,7 +24,7 @@ module Puppet::Parser::Functions
       end
       fn = "#{module_path}/files/#{file}"
     end
-    if !File.exists? arg
+    if !File.exists? fn
       raise Puppet::ParseError, ("better_file('#{arg}') could not find file '#{fn}'")
     end
     IO.read(fn)

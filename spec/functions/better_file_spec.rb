@@ -21,5 +21,10 @@ describe 'better_file' do
     expect { subject.call([@tf.path]) }.not_to raise_error()
   end
   it { should run.with_params(@tf.path).and_return('foobar') }
+
+  it 'should work if given a module path' do
+    expect { subject.call(['puppet:///modules/test_module/testfile']) }.not_to raise_error()
+  end
+  it { should run.with_params('puppet:///modules/test_module/testfile').and_return("foobar\n\n") }
 end
 
