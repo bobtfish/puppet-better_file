@@ -23,6 +23,8 @@ module Puppet::Parser::Functions
         raise(Puppet::ParseError, "Could not find module #{mod} in environment #{compiler.environment}")
       end
       fn = "#{module_path}/files/#{file}"
+    elsif arg =~ /^puppet:\/\/\/files\/(.*)$/
+      fn = "#{lookupvar('::settings::confdir')}/files/#{$1}"
     end
     if !File.exists? fn
       raise Puppet::ParseError, ("better_file('#{arg}') could not find file '#{fn}'")

@@ -4,59 +4,54 @@
 
 1. [Overview](#overview)
 2. [Module Description - What the module does and why it is useful](#module-description)
-3. [Setup - The basics of getting started with [Modulename]](#setup)
-    * [What [Modulename] affects](#what-[modulename]-affects)
-    * [Setup requirements](#setup-requirements)
-    * [Beginning with [Modulename]](#beginning-with-[Modulename])
-4. [Usage - Configuration options and additional functionality](#usage)
-5. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
+4. [Usage - Using the better_file function](#usage)
 5. [Limitations - OS compatibility, etc.](#limitations)
 6. [Development - Guide for contributing to the module](#development)
 
 ##Overview
 
-A one-maybe-two sentence summary of what the module does/what problem it solves. This is your 30 second elevator pitch for your module. Consider including OS/Puppet version it works with.       
+A better_file function which slurps files from full paths or puppet:/// uris 
 
 ##Module Description
 
-If applicable, this section should have a brief description of the technology the module integrates with and what that integration enables. This section should answer the questions: "What does this module *do*?" and "Why would I use it?"
-    
-If your module has a range of functionality (installation, configuration, management, etc.) this is the time to mention it.
+The puppet builtin file() function is severely limited as it will only operate on fully qualitied paths.
 
-##Setup
+This is [a](http://projects.puppetlabs.com/issues/1946) [well](http://projects.puppetlabs.com/issues/2771) [known](http://projects.puppetlabs.com/issues/4749) [issue](http://projects.puppetlabs.com/issues/5158).
 
-###What [Modulename] affects
-
-* A list of files, packages, services, or operations that the module will alter, impact, or execute on the system it's installed on.
-* This is a great place to stick any warnings.
-* Can be in list or paragraph form. 
-
-###Setup Requirements **OPTIONAL**
-
-If your module requires anything extra before setting up (pluginsync enabled, etc.), mention it here. 
-  
-###Beginning with [Modulename]  
-
-The very basic steps needed for a user to get the module up and running. 
-
-If your most recent release breaks compatibility or requires particular steps for upgrading, you may wish to include an additional section here: Upgrading (For an example, see http://forge.puppetlabs.com/puppetlabs/firewall).
+This function fixes (or at least hacks around) that limitation for the common cases.
 
 ##Usage
 
-Put the classes, types, and resources for customizing, configuring, and doing the fancy stuff with your module here. 
+###With a full path name
 
-##Reference
+    better_file('/a/full/path')
 
-Here, list the classes, types, providers, facts, etc contained in your module. This section should include all of the under-the-hood workings of your module so people know what the module is touching on their system but don't need to mess with things. (We are working on automating this section!)
+Works exactly like the built in file() function
+
+###With a module uri
+
+    better_file('puppet:///modules/my_module/myfile')
+
+Will resolve 'my_module' to a path on disk in the current environment, and will look inside the files/ subdirectory for that module
+
+For example if your modules are in /etc/puppet/modules, then the above will try to find the file in /etc/puppet/modules/files/myfile
+
+### With a files uri
+
+    better_file('puppet:///files/myfile')
+
+This will assume that your files are located under the _$confdir/files_ (e.g. /etc/puppet/files)
 
 ##Limitations
 
-This is where you list OS compatibility, version compatibility, etc.
+Unless your fileserver is configured to serve the 'files' repository from _$confdir/files_ then
+_puppet:///files/_ uris will not work.
+
+Custom fileserver modules are unsupported. 
 
 ##Development
 
-Since your module is awesome, other users will want to play with it. Let them know what the ground rules for contributing are.
+Patches are welcome!
 
-##Release Notes/Contributors/Etc **Optional**
+Please open a pull request on github :)
 
-If you aren't using changelog, put your release notes here (though you should consider using changelog). You may also add any additional sections you feel are necessary or important to include here. Please use the `## ` header. 
